@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css2.css">
+    <title>Авторизация</title>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="form-container" id="login-container">
+            <form id="loginForm">
+                <h2>Вход</h2>
+                <input type="text" id="username" placeholder="Имя пользователя" required />
+                <input type="password" id="password" placeholder="Пароль" required />
+                <button type="submit">Войти</button>
+                <p>Нет аккаунта? <span id="toggle">Зарегистрируйтесь</span></p>
+            </form>
+        </div>
+
+        <div class="form-container" id="register-container" style="display: none;">
+            <form id="registerForm">
+                <h2>Регистрация</h2>
+                <input type="text" id="regUsername" placeholder="Имя пользователя" required />
+                <input type="email" id="regEmail" placeholder="Email" required />
+                <input type="password" id="regPassword" placeholder="Пароль" required />
+                <button type="submit">Зарегистрироваться</button>
+                <p>Уже есть аккаунт? <span id="toggleLogin">Войти</span></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="faa.js"></script>
+</body>
+</html>

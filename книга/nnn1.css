@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh; /* Изменено с height на min-height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    animation: gradient-animation 3s ease infinite;
+    overflow-y: auto; /* Можно использовать auto вместо scroll */
+}
+
+/* Book */
+.book {
+    position: relative;
+    width: 420px; /* Ширина книги */
+    height: 650px; /* Высота книги */
+    transition: transform 0.5s, box-shadow 0.5s;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Скругленные углы */
+}
+
+/* Страницы книги */
+.paper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    perspective: 1500px;
+}
+
+.front, .back {
+    background: #fff; /* Чистый белый цвет для страниц */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s, box-shadow 0.5s;
+    border-radius: 15px; /* Соответствие радиусу книги */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.front {
+    z-index: 1;
+    backface-visibility: hidden;
+    border-left: 5px solid #FF6F61; /* Яркая граница для передней обложки */
+}
+
+.back {
+    z-index: 0;
+}
+
+.front-content, .back-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px; /* Увеличенные отступы для лучшего восприятия */
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px; /* Увеличенный размер заголовка */
+    margin-bottom: 20px;
+    color: #2D2D2D; /* Темный цвет заголовка */
+    font-family: 'Montserrat', sans-serif; /* Современный шрифт для заголовков */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Легкая тень для заголовка */
+}
+
+p {
+    font-size: 18px; /* Размер текста */
+    margin-bottom: 15px;
+    color: #555; /* Немного светлее текст */
+    line-height: 1.6;
+    max-width: 90%; /* Уменьшение ширины текста для лучшего восприятия */
+}
+
+.back-content {
+    transform: rotateY(180deg);
+}
+
+/* Paper flip effect */
+.flipped .front, .flipped .back {
+    transform: rotateY(-180deg);
+}
+
+/* Кнопки */
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin: 5px;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    background-color: #FF6F61; /* Цвет кнопки при наведении */
+    color: #ffffff; /* Белый текст при наведении */
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Увеличенная тень */
+}
+
+button {
+    font-size: 14px; /* Размер кнопки */
+    padding: 10px 15px; /* Увеличенные отступы */
+    border: 2px solid #FF6F61; /* Яркая граница кнопки */
+    border-radius: 25px; /* Скругленные углы кнопки */
+    background-color: #ffffff; /* Белый фон кнопки */
+    color: #FF6F61; /* Цвет текста кнопки */
+}
+
+/* Изображение видео */
+.video-thumbnail {
+    width: 100%; /* Ширина изображения */
+    max-width: 300px; /* Максимальная ширина */
+    border-radius: 15px; /* Скругленные углы */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Указывает, что изображение кликабельно */
+    transition: transform 0.3s; /* Анимация при наведении */
+}
+
+.video-thumbnail:hover {
+    transform: scale(1.10); /* Увеличение изображения при наведении */
+}
+
+/* Фото автора */
+.author-photo {
+    width: 150px; /* Установите желаемую ширину */
+    height: auto; /* Высота будет автоматически подстраиваться */
+    border-radius: 50%; /* Круглая форма */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Тень для эффекта */
+}
+
+/* Контейнер для аудио */
+.audio-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+audio {
+    width: 100%;
+    max-width: 500px; /* Максимальная ширина плеера */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(#444);
+}
+/* Добавь адаптивность */
+@media (max-width: 768px) {
+    .book {
+        width: 90%; /* Изменение ширины для мобильных устройств */
+        height: auto; /* Авто высота для лучшего отображения */
+    }
+
+    h1 {
+        font-size: 24px; /* Уменьшение размера заголовка */
+    }
+
+    p {
+        font-size: 16px; /* Уменьшение размера текста */
+    }
+}
+
+/* Индикатор текущей страницы */
+.page-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgb(255, 207, 207);
+}
+@keyframes gradient-animation {
+    0% {
+        background: linear-gradient(135deg, #6a11cb, #bdd260); /* Фиолетово-синий градиент */
+    }
+    50% {
+        background: linear-gradient(135deg, #bdd260, #6a11cb); /* Розово-апельсиновый градиент */
+    }
+    100% {
+        background: linear-gradient(135deg, #6a11cb, #bdd260);
+    }
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif; /* Современный шрифт */
+    animation: gradient-animation 3s ease infinite; /* Добавление анимации градиента */
+    overflow-y: scroll;
+}
+
+/* Paper stack order */
+#p1 { z-index: 10; }
+#p2 { z-index: 9; }
+#p3 { z-index: 8; }
+#p4 { z-index: 7; }
+#p5 { z-index: 6; }
+#p6 { z-index: 5; }
+#p7 { z-index: 4; }
+#p8 { z-index: 3; }
+#p9 { z-index: 2; }
+#p10 { z-index: 1; }

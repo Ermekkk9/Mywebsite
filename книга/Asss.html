@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга по C#</title>
+    <link rel="stylesheet" type="text/css" href="nnn1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400&family=Roboto:wght@300&display=swap" rel="stylesheet">
+</head>
+<!-- Audio Element -->
+<audio id="page-flip-sound" src="C:\Users\daniy\OneDrive\Рабочий стол\002\book_1_1.mp3" preload="auto"></audio>
+<body>
+    <div id="book" class="book">
+        
+        <!-- Ваша книга -->
+    </div>
+<body>
+    <div class="book" id="book">
+        <div class="paper" id="p1">
+            <div class="front">
+                <div class="front-content">
+                    <div class="lightning-effect"></div>
+                    <h1>Глава 1</h1>
+                    <p><strong>Введение в C#</strong>: В этой главе мы рассмотрим основы языка C#, его назначение и область применения.</p>
+                    <p>Темы:</p>
+                    <ul>
+                        <li>История языка C#</li>
+                        <li>Особенности языка</li>
+                        <li>Настройка среды разработки</li>
+                    </ul>
+                    <button class="next-btn">Следующая страница</button>
+                </div>
+            </div>
+            <div class="back">
+                <div class="back-content">
+                    <div class="lightning-effect"></div>
+                    <h1>Глава 2</h1>
+                    <p><strong>Основы синтаксиса</strong>: Здесь мы изучим базовые синтаксические конструкции C#.</p>
+                    <p>В C# переменные используются для хранения данных различных типов, таких как целые числа, строки, вещественные числа и логические значения. Правильное определение и использование переменных — основа написания эффективного кода.</p>
+                    <ul>
+                        <li>Переменные и типы данных</li>
+                        <li>Операторы</li>
+                        <li>Условные конструкции</li>
+                    </ul>
+                    <button class="prev-btn">Предыдущая страница</button>
+                </div>
+            </div>
+        </div>
+        <div class="paper" id="p2">
+            <div class="front">
+                <div class="front-content">
+                    <div class="lightning-effect"></div>
+                    <h1>Глава 3</h1>
+                    <p><strong>Управляющие структуры</strong>: Мы познакомимся с управляющими структурами, такими как циклы и условия.</p>
+                    <p>Темы:</p>
+                    <ul>
+                        <a href="while.mp4" target="_blank" class="video-link">
+                            <img src="whilep.jpg" alt="Смотреть видео" class="video-thumbnail">
+                        </a>
+                        <li>..</li>
+                        <li>Условные операторы</li>
+                        <li>Циклы: for, while, do-while</li>
+                        <li>Операторы управления потоком</li>
+                    </ul>
+                    <button class="next-btn">Следующая страница</button>
+                </div>
+            </div>
+            <div class="back">
+                <div class="back-content">
+                    <h1>Глава 4</h1>
+                    <p><strong>Массивы и коллекции</strong>: В этой главе мы изучим, как работать с массивами и коллекциями в C#.</p>
+                    <p>Массивы позволяют хранить несколько элементов одного типа данных в одной структуре. Это полезно для работы с большими объемами однотипных данных. Массивы имеют фиксированный размер, который задается при их создании.</p>
+                        <li>Создание и использование массивов</li>
+                        <li>Коллекции: List, Dictionary, HashSet</li>
+                        <li>Итерация по коллекциям</li>
+                    </ul>
+                    <button class="prev-btn">Предыдущая страница</button>
+                </div>
+            </div>
+        </div>
+        <div class="paper" id="p3">
+            <div class="front">
+                <div class="front-content">
+                    <div class="lightning-effect"></div>
+                    <h1>Глава 5</h1>
+                    <p><strong>Объектно-ориентированное программирование</strong>: Мы изучим основные принципы ООП и их реализацию в C#.</p>
+                    <p>Темы:</p>
+                    <ul>
+                        <a href="oop.mp4" target="_blank" class="video-link">
+                            <img src="oop.jpg" alt="Смотреть видео" class="video-thumbnail">
+                        </a>
+                        <p>..</p>
+                        <li>Классы и объекты</li>
+                        <li>Наследование</li>
+                        <li>Полиморфизм</li>
+                    </ul>
+                    <button class="next-btn">Следующая страница</button>
+                </div>
+            </div>
+            <div class="back">
+                <div class="back-content">
+                    <h1>Глава 6</h1>
+                    <p><strong>Исключения и отладка</strong>: В этой главе мы рассмотрим, как обрабатывать исключения и отлаживать код.</p>
+                    <p><strong>Исключения — это ошибки, которые возникают во время выполнения программы. В C# есть встроенные механизмы для обработки исключений, что позволяет программе продолжить работу или корректно завершить выполнение.</strong></p>
+                    <ul>
+                        <li>Обработка исключений</li>
+                        <li>Инструменты отладки</li>
+                        <li>Логирование</li>
+                    </ul>
+                    <button class="prev-btn">Предыдущая страница</button>
+                </div>
+            </div>
+        </div>
+        <div class="paper" id="p4">
+            <div class="front">
+                <div class="front-content">
+                    <h1>Глава 7</h1>
+                    <p><strong>Работа с файлами</strong>: Здесь мы узнаем, как читать и записывать данные в файлы.</p>
+                    <p><strong>Работа с текстовыми файлами является одной из базовых задач в программировании. В C# существуют встроенные методы для чтения и записи текстовых данных, что позволяет эффективно работать с файлами. Это полезно для хранения данных.</strong></p>
+                    <ul>
+                        <li>Чтение и запись текстовых файлов</li>
+                        <li>Работа с бинарными файлами</li>
+                        <li>Использование StreamReader и StreamWriter</li>
+                    </ul>
+                    <button class="next-btn">Следующая страница</button>
+                </div>
+            </div>
+            <div class="back">
+                <div class="back-content">
+                    <h1>Глава 8</h1>
+                    <p><strong>Асинхронное программирование</strong>: Мы рассмотрим, как писать асинхронный код в C#.</p>
+                    <p><strong>Асинхронное программирование позволяет выполнять задачи в фоновом режиме, не блокируя основной поток выполнения программы. Это особенно полезно при работе с длительными операциями, такими как загрузка данных из интернета или чтение/запись файлов.</strong></p>
+                    <ul>
+                        <li>Понимание асинхронности</li>
+                        <li>Использование async и await</li>
+                        <li>Обработка асинхронных операций</li>
+                    </ul>
+                    <button class="prev-btn">Предыдущая страница</button>
+                </div>
+            </div>
+        </div>
+        <div class="paper" id="p5">
+            <div class="front">
+                <div class="front-content">
+                    <h1>Глава 9</h1>
+                    <p><strong>Работа с базами данных</strong>: Здесь мы изучим, как взаимодействовать с базами данных из C#.</p>
+                    <p>Темы:</p>
+                    <ul>
+                        <a href="while.mp4" target="_blank" class="video-link">
+                            <img src="C:\Users\daniy\OneDrive\Рабочий стол\002\photo_2024-10-29_02-07-09.jpg" alt="Смотреть видео" class="video-thumbnail">
+                        </a>
+                        <li>Подключение к базе данных</li>
+                        <li>Использование ADO.NET</li>
+                        <li>Запросы SQL из C#</li>
+                    </ul>
+                    <button class="next-btn">Следующая страница</button>
+                </div>
+            </div>
+            <div class="back">
+                <div class="back-content">
+                    <h1>Глава 10</h1>
+                    <p><strong>Автор</strong>: Шайлообеков Эрмек.</p>
+                    <p>ниже еще больше информацит:</p>
+                    <ul>
+                        <li><a href="domm.html">
+                            <img src="linux.jpg" alt="Фото автора" class="author-photo">
+                        </a></li>
+                        <div class="audio-container">
+                            <audio controls>
+                                <source src="C:\Users\daniy\OneDrive\Рабочий стол\002\artic.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>                        
+                    </ul>
+                    <button class="prev-btn">Предыдущая страница</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <script src="script.js"></script>
+</body>
+</html>
