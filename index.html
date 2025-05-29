@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IQ Test</title>
+    <title>IQ Test Game</title>
     <style>
         * {
             margin: 0;
@@ -15,42 +15,57 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: #333;
             transition: all 0.3s ease;
         }
 
-        .dark-theme {
+        body.dark-theme {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
         }
 
         .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
             transition: all 0.3s ease;
-        }
-
-        .dark-theme .container {
-            background: rgba(52, 73, 94, 0.95);
-            color: white;
-        }
-
-        .screen {
-            display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
         }
 
-        .screen.active {
-            display: block;
-            opacity: 1;
+        .dark-theme .game-card {
+            background: rgba(44, 62, 80, 0.95);
+            color: #ecf0f1;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
         }
 
         h1 {
@@ -73,64 +88,60 @@
             color: #bdc3c7;
         }
 
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .dark-theme input[type="text"] {
+            background: rgba(52, 73, 94, 0.8);
+            border-color: #5a6c7d;
+            color: #ecf0f1;
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
         .btn {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
             padding: 15px 30px;
+            border-radius: 12px;
             font-size: 1.1rem;
-            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 10px;
+            min-width: 120px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .player-input {
-            margin: 20px 0;
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
         }
 
-        .player-input input {
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            width: 300px;
-            max-width: 100%;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .player-input input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-        }
-
-        .question-counter {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .dark-theme .question-counter {
-            color: #bdc3c7;
+        .btn-danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
         }
 
         .timer {
@@ -138,13 +149,24 @@
             font-weight: bold;
             color: #e74c3c;
             margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 3px solid #e74c3c;
+            border-radius: 12px;
+            display: inline-block;
+            min-width: 80px;
             animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-weight: 600;
         }
 
         .question {
@@ -159,35 +181,29 @@
 
         .options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
 
         .option {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid transparent;
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
         }
 
         .dark-theme .option {
-            background: #34495e;
-            border-color: #2c3e50;
-            color: white;
+            background: rgba(127, 140, 141, 0.2);
         }
 
         .option:hover {
-            background: #e9ecef;
+            background: rgba(102, 126, 234, 0.2);
             border-color: #667eea;
             transform: translateY(-2px);
-        }
-
-        .dark-theme .option:hover {
-            background: #2c3e50;
         }
 
         .option.selected {
@@ -196,64 +212,145 @@
             border-color: #667eea;
         }
 
-        .result-screen {
+        .result-card {
             text-align: center;
         }
 
         .score {
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #27ae60;
-        }
-
-        .iq-level {
-            font-size: 1.5rem;
-            margin: 20px 0;
-            padding: 15px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 15px;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .stat {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-        }
-
-        .dark-theme .stat {
-            background: #34495e;
-            border-color: #2c3e50;
-            color: white;
-        }
-
-        .stat-value {
-            font-size: 2rem;
+            font-size: 4rem;
             font-weight: bold;
             color: #667eea;
+            margin: 20px 0;
         }
 
-        .best-score {
+        .rating {
+            font-size: 2rem;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .rating.genius {
             background: linear-gradient(45deg, #f39c12, #e67e22);
             color: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px 0;
         }
+
+        .rating.above-average {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .rating.normal {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .rating.need-practice {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .leaderboard {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .dark-theme .leaderboard table {
+            background: rgba(44, 62, 80, 0.9);
+        }
+
+        .leaderboard th,
+        .leaderboard td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-theme .leaderboard th,
+        .dark-theme .leaderboard td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard th {
+            background: rgba(102, 126, 234, 0.1);
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(180deg);
+        }
+
+        .visual-pattern {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .shape {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #333;
+            display: inline-block;
+        }
+
+        .dark-theme .shape {
+            border-color: #ecf0f1;
+        }
+
+        .circle { border-radius: 50%; }
+        .square { border-radius: 0; }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid #333;
+            border-top: none;
+        }
+
+        .dark-theme .triangle {
+            border-bottom-color: #ecf0f1;
+        }
+
+        .filled { background-color: #333; }
+        .dark-theme .filled { background-color: #ecf0f1; }
 
         @media (max-width: 768px) {
             .container {
+                padding: 10px;
+            }
+            
+            .game-card {
                 padding: 20px;
-                margin: 20px;
+                margin: 10px;
             }
             
             h1 {
@@ -264,186 +361,169 @@
                 grid-template-columns: 1fr;
             }
             
-            .player-input input {
-                width: 100%;
+            .score {
+                font-size: 3rem;
             }
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        .hidden {
+            display: none;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">🌙</button>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     
     <div class="container">
-        <!-- Стартовый экран -->
-        <div id="start-screen" class="screen active">
+        <!-- Start Screen -->
+        <div id="start-screen" class="game-card">
             <h1>🧠 IQ Test</h1>
             <p class="subtitle">
-                Добро пожаловать в тест на интеллект!<br>
-                Вам будет предложено 10 вопросов различной сложности.<br>
-                На каждый вопрос у вас есть 15 секунд.<br>
-                Готовы проверить свой IQ?
+                Добро пожаловать в интерактивный тест на IQ!<br>
+                Вам предстоит ответить на 10 разнообразных вопросов.<br>
+                На каждый вопрос дается 15 секунд.
             </p>
-            
-            <div class="player-input">
+            <div class="input-group">
                 <input type="text" id="player-name" placeholder="Введите ваше имя" maxlength="20">
             </div>
-            
-            <div id="best-score-display" class="best-score" style="display: none;">
-                Лучший результат: <span id="best-score-value"></span> из 10
-            </div>
-            
-            <button class="btn" onclick="startGame()">🚀 Начать тест</button>
+            <button class="btn" onclick="startGame()">Начать тест</button>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">Таблица лидеров</button>
         </div>
 
-        <!-- Экран игры -->
-        <div id="game-screen" class="screen">
-            <div class="question-counter">
-                Вопрос <span id="current-question">1</span> из <span id="total-questions">10</span>
+        <!-- Game Screen -->
+        <div id="game-screen" class="game-card hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
             </div>
-            
+            <div class="question-counter" id="question-counter">Вопрос 1 из 10</div>
             <div class="timer" id="timer">15</div>
-            
-            <div class="question" id="question-text"></div>
-            
-            <div class="options" id="options-container"></div>
-            
-            <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">
-                Следующий вопрос ➡️
-            </button>
+            <div class="question" id="question"></div>
+            <div id="visual-content"></div>
+            <div class="options" id="options"></div>
+            <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Далее</button>
         </div>
 
-        <!-- Экран результатов -->
-        <div id="result-screen" class="screen">
-            <h1>🎉 Результаты теста</h1>
-            <p>Привет, <span id="final-player-name"></span>!</p>
-            
-            <div class="score">
-                <span id="final-score">0</span> из 10
-            </div>
-            
-            <div class="iq-level" id="iq-level"></div>
-            
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value" id="accuracy">0%</div>
-                    <div>Точность</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value" id="avg-time">0s</div>
-                    <div>Среднее время</div>
-                </div>
-            </div>
-            
-            <div id="new-best" class="best-score" style="display: none;">
-                🏆 Новый рекорд!
-            </div>
-            
-            <button class="btn" onclick="restartGame()">🔄 Пройти заново</button>
-            <button class="btn" onclick="goHome()">🏠 На главную</button>
+        <!-- Result Screen -->
+        <div id="result-screen" class="game-card hidden">
+            <h2>🎉 Тест завершен!</h2>
+            <div class="score" id="final-score">0/10</div>
+            <div class="rating" id="rating"></div>
+            <p id="result-message"></p>
+            <button class="btn" onclick="restartGame()">Пройти снова</button>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">Таблица лидеров</button>
+        </div>
+
+        <!-- Leaderboard Screen -->
+        <div id="leaderboard-screen" class="game-card hidden">
+            <h2>🏆 Таблица лидеров</h2>
+            <div class="leaderboard" id="leaderboard-content"></div>
+            <button class="btn" onclick="showStartScreen()">Назад</button>
+            <button class="btn btn-danger" onclick="clearLeaderboard()">Очистить рейтинг</button>
         </div>
     </div>
 
     <script>
-        // Данные игры
+        const questions = [
+            {
+                type: 'math',
+                question: 'Если 5 рабочих могут построить 5 домов за 5 дней, сколько дней потребуется 10 рабочим, чтобы построить 10 домов?',
+                options: ['5 дней', '10 дней', '15 дней', '20 дней'],
+                answer: 0
+            },
+            {
+                type: 'logic',
+                question: 'Продолжите последовательность: 2, 6, 12, 20, 30, ?',
+                options: ['40', '42', '44', '46'],
+                answer: 1
+            },
+            {
+                type: 'visual',
+                question: 'Какая фигура должна быть следующей в последовательности?',
+                pattern: ['circle', 'square', 'triangle', 'circle', 'square', '?'],
+                options: ['Треугольник', 'Круг', 'Квадрат', 'Ромб'],
+                answer: 0
+            },
+            {
+                type: 'analogy',
+                question: 'Книга относится к чтению, как вилка относится к...',
+                options: ['еде', 'кухне', 'ложке', 'тарелке'],
+                answer: 0
+            },
+            {
+                type: 'riddle',
+                question: 'У меня есть города, но нет домов. У меня есть горы, но нет деревьев. У меня есть вода, но нет рыбы. Что я такое?',
+                options: ['Карта', 'Книга', 'Картина', 'Фотография'],
+                answer: 0
+            },
+            {
+                type: 'math',
+                question: 'Если сегодня понедельник, каким днем недели будет день через 100 дней?',
+                options: ['Понедельник', 'Вторник', 'Среда', 'Четверг'],
+                answer: 1
+            },
+            {
+                type: 'logic',
+                question: 'В корзине лежат 6 яблок. Вы взяли 4 яблока. Сколько яблок у вас?',
+                options: ['2', '4', '6', '10'],
+                answer: 1
+            },
+            {
+                type: 'visual',
+                question: 'Сколько треугольников вы видите в фигуре?',
+                pattern: 'complex-triangles',
+                options: ['3', '4', '5', '6'],
+                answer: 2
+            },
+            {
+                type: 'analogy',
+                question: 'Врач относится к больнице, как учитель относится к...',
+                options: ['ученику', 'школе', 'книге', 'уроку'],
+                answer: 1
+            },
+            {
+                type: 'logic',
+                question: 'Какое число пропущено: 1, 1, 2, 3, 5, 8, ?',
+                options: ['11', '12', '13', '14'],
+                answer: 2
+            },
+            {
+                type: 'riddle',
+                question: 'Что становится больше, когда его ставят вверх ногами?',
+                options: ['Число 6', 'Песочные часы', 'Дерево', 'Дом'],
+                answer: 0
+            },
+            {
+                type: 'math',
+                question: 'Сколько месяцев в году имеют 28 дней?',
+                options: ['1', '2', '11', '12'],
+                answer: 3
+            }
+        ];
+
         let currentQuestionIndex = 0;
         let score = 0;
         let timer;
         let timeLeft = 15;
-        let selectedAnswer = null;
         let playerName = '';
-        let questionStartTime = 0;
-        let totalTime = 0;
-        let isDarkTheme = false;
+        let selectedQuestions = [];
+        let selectedAnswer = null;
 
-        // База вопросов
-        const questions = [
-            {
-                question: "Какое число должно быть следующим в последовательности: 2, 6, 12, 20, 30, ?",
-                options: ["42", "40", "38", "44"],
-                answer: 0
-            },
-            {
-                question: "Если все розы - цветы, а некоторые цветы - красные, то:",
-                options: ["Все розы красные", "Некоторые розы могут быть красными", "Никакие розы не красные", "Все красные цветы - розы"],
-                answer: 1
-            },
-            {
-                question: "Что продолжает данную последовательность: ○ ◐ ● ◑ ?",
-                options: ["○", "◐", "●", "◑"],
-                answer: 0
-            },
-            {
-                question: "Книга стоит 10 рублей плюс половина её цены. Сколько стоит книга?",
-                options: ["15 рублей", "20 рублей", "12 рублей", "18 рублей"],
-                answer: 1
-            },
-            {
-                question: "Какое слово не подходит к остальным?",
-                options: ["Собака", "Кошка", "Лошадь", "Стол"],
-                answer: 3
-            },
-            {
-                question: "Если A = 1, B = 2, C = 3, то чему равно слово 'КОТ'?",
-                options: ["33", "36", "39", "42"],
-                answer: 2
-            },
-            {
-                question: "Продолжите ряд: 1, 1, 2, 3, 5, 8, ?",
-                options: ["11", "13", "15", "10"],
-                answer: 1
-            },
-            {
-                question: "Какая фигура лишняя среди: треугольник, квадрат, круг, прямоугольник?",
-                options: ["Треугольник", "Квадрат", "Круг", "Прямоугольник"],
-                answer: 2
-            },
-            {
-                question: "Если вчера было воскресенье, то какой день будет послезавтра?",
-                options: ["Вторник", "Среда", "Четверг", "Пятница"],
-                answer: 1
-            },
-            {
-                question: "Сколько месяцев в году имеют 28 дней?",
-                options: ["1", "2", "11", "12"],
-                answer: 3
-            },
-            {
-                question: "Что тяжелее: килограмм ваты или килограмм железа?",
-                options: ["Вата", "Железо", "Одинаково", "Зависит от условий"],
-                answer: 2
-            },
-            {
-                question: "Закончите аналогию: день относится к ночи, как лето относится к...",
-                options: ["Весне", "Осени", "Зиме", "Году"],
-                answer: 2
-            },
-            {
-                question: "Какое число получится, если перемножить все цифры числа 2468?",
-                options: ["384", "396", "404", "368"],
-                answer: 0
-            },
-            {
-                question: "У отца шесть сыновей. Каждый сын имеет сестру. Сколько всего детей?",
-                options: ["6", "7", "12", "13"],
-                answer: 1
-            },
-            {
-                question: "Какое из чисел не является квадратом целого числа?",
-                options: ["16", "25", "30", "36"],
-                answer: 2
-            }
-        ];
-
-        // Перемешивание массива
         function shuffleArray(array) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -453,218 +533,278 @@
             return shuffled;
         }
 
-        // Получение случайных вопросов
-        function getRandomQuestions() {
-            const shuffled = shuffleArray(questions);
-            return shuffled.slice(0, 10);
-        }
-
-        let gameQuestions = [];
-
-        // Переключение темы
-        function toggleTheme() {
-            isDarkTheme = !isDarkTheme;
-            document.body.classList.toggle('dark-theme');
-            const themeBtn = document.querySelector('.theme-toggle');
-            themeBtn.textContent = isDarkTheme ? '☀️' : '🌙';
-        }
-
-        // Загрузка лучшего результата
-        function loadBestScore() {
-            const bestScore = localStorage.getItem('iq-test-best-score');
-            if (bestScore) {
-                document.getElementById('best-score-display').style.display = 'block';
-                document.getElementById('best-score-value').textContent = bestScore;
-            }
-        }
-
-        // Сохранение лучшего результата
-        function saveBestScore(score) {
-            const currentBest = localStorage.getItem('iq-test-best-score') || 0;
-            if (score > parseInt(currentBest)) {
-                localStorage.setItem('iq-test-best-score', score);
-                document.getElementById('new-best').style.display = 'block';
-                return true;
-            }
-            return false;
-        }
-
-        // Переключение экранов
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            
-            setTimeout(() => {
-                document.getElementById(screenId).classList.add('active');
-                document.getElementById(screenId).classList.add('fade-in');
-            }, 300);
-        }
-
-        // Начало игры
         function startGame() {
-            playerName = document.getElementById('player-name').value.trim() || 'Игрок';
-            gameQuestions = getRandomQuestions();
-            currentQuestionIndex = 0;
-            score = 0;
-            totalTime = 0;
-            
-            showScreen('game-screen');
-            loadQuestion();
-        }
-
-        // Загрузка вопроса
-        function loadQuestion() {
-            if (currentQuestionIndex >= gameQuestions.length) {
-                endGame();
+            playerName = document.getElementById('player-name').value.trim();
+            if (!playerName) {
+                alert('Пожалуйста, введите ваше имя');
                 return;
             }
 
-            const question = gameQuestions[currentQuestionIndex];
+            selectedQuestions = shuffleArray(questions).slice(0, 10);
+            currentQuestionIndex = 0;
+            score = 0;
             
-            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
-            document.getElementById('total-questions').textContent = gameQuestions.length;
-            document.getElementById('question-text').textContent = question.question;
+            showScreen('game-screen');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = selectedQuestions[currentQuestionIndex];
+            selectedAnswer = null;
             
-            const optionsContainer = document.getElementById('options-container');
+            document.getElementById('question-counter').textContent = `Вопрос ${currentQuestionIndex + 1} из 10`;
+            document.getElementById('question').textContent = question.question;
+            
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / 10) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            
+            // Handle visual content
+            const visualContent = document.getElementById('visual-content');
+            visualContent.innerHTML = '';
+            
+            if (question.type === 'visual') {
+                if (question.pattern === 'complex-triangles') {
+                    visualContent.innerHTML = `
+                        <div style="font-size: 3rem; margin: 20px 0;">
+                            ▲<br>
+                            ▲ ▲<br>
+                            ▲ ▲ ▲
+                        </div>
+                    `;
+                } else if (Array.isArray(question.pattern)) {
+                    const patternDiv = document.createElement('div');
+                    patternDiv.className = 'visual-pattern';
+                    
+                    question.pattern.forEach(shape => {
+                        const shapeDiv = document.createElement('div');
+                        if (shape === '?') {
+                            shapeDiv.textContent = '?';
+                            shapeDiv.style.fontSize = '2rem';
+                            shapeDiv.style.fontWeight = 'bold';
+                        } else {
+                            shapeDiv.className = `shape ${shape}`;
+                        }
+                        patternDiv.appendChild(shapeDiv);
+                    });
+                    
+                    visualContent.appendChild(patternDiv);
+                }
+            }
+            
+            // Show options
+            const optionsContainer = document.getElementById('options');
             optionsContainer.innerHTML = '';
             
             question.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option';
-                optionElement.textContent = option;
-                optionElement.onclick = () => selectAnswer(index);
-                optionsContainer.appendChild(optionElement);
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index, optionDiv);
+                optionsContainer.appendChild(optionDiv);
             });
-
-            selectedAnswer = null;
-            document.getElementById('next-btn').style.display = 'none';
             
-            // Запуск таймера
+            // Start timer
             timeLeft = 15;
-            questionStartTime = Date.now();
             startTimer();
+            
+            document.getElementById('next-btn').style.display = 'none';
         }
 
-        // Выбор ответа
-        function selectAnswer(answerIndex) {
-            if (selectedAnswer !== null) return;
+        function selectOption(index, element) {
+            // Remove previous selection
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             
-            selectedAnswer = answerIndex;
-            const options = document.querySelectorAll('.option');
-            options[answerIndex].classList.add('selected');
+            // Select current option
+            element.classList.add('selected');
+            selectedAnswer = index;
             
-            // Остановка таймера
-            clearInterval(timer);
-            
-            // Показать кнопку следующего вопроса
             document.getElementById('next-btn').style.display = 'block';
-            
-            // Проверка ответа
-            const currentQuestion = gameQuestions[currentQuestionIndex];
-            if (selectedAnswer === currentQuestion.answer) {
-                score++;
-            }
-            
-            // Добавление времени ответа
-            const responseTime = (Date.now() - questionStartTime) / 1000;
-            totalTime += responseTime;
         }
 
-        // Следующий вопрос
-        function nextQuestion() {
-            currentQuestionIndex++;
-            loadQuestion();
-        }
-
-        // Таймер
         function startTimer() {
-            const timerElement = document.getElementById('timer');
+            clearInterval(timer);
+            document.getElementById('timer').textContent = timeLeft;
             
             timer = setInterval(() => {
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 5) {
-                    timerElement.style.color = '#e74c3c';
-                } else {
-                    timerElement.style.color = '#27ae60';
-                }
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
                 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    // Автоматический переход если время вышло
-                    if (selectedAnswer === null) {
-                        totalTime += 15;
-                        nextQuestion();
-                    }
-                } else {
-                    timeLeft--;
+                    nextQuestion();
                 }
             }, 1000);
         }
 
-        // Завершение игры
-        function endGame() {
-            showScreen('result-screen');
+        function nextQuestion() {
+            clearInterval(timer);
             
-            document.getElementById('final-player-name').textContent = playerName;
-            document.getElementById('final-score').textContent = score;
-            
-            const accuracy = Math.round((score / gameQuestions.length) * 100);
-            document.getElementById('accuracy').textContent = accuracy + '%';
-            
-            const avgTime = Math.round(totalTime / gameQuestions.length * 10) / 10;
-            document.getElementById('avg-time').textContent = avgTime + 's';
-            
-            // Определение уровня IQ
-            let iqLevel = '';
-            let iqColor = '';
-            
-            if (score >= 9) {
-                iqLevel = '🎖️ Гений! (IQ 140+)';
-                iqColor = '#e74c3c';
-            } else if (score >= 8) {
-                iqLevel = '🏆 Превосходно! (IQ 130+)';
-                iqColor = '#e67e22';
-            } else if (score >= 7) {
-                iqLevel = '⭐ Выше среднего (IQ 115+)';
-                iqColor = '#f39c12';
-            } else if (score >= 5) {
-                iqLevel = '👍 Средний уровень (IQ 100+)';
-                iqColor = '#27ae60';
-            } else if (score >= 3) {
-                iqLevel = '📚 Ниже среднего (IQ 85+)';
-                iqColor = '#3498db';
-            } else {
-                iqLevel = '💪 Нужно потренироваться!';
-                iqColor = '#9b59b6';
+            if (selectedAnswer === selectedQuestions[currentQuestionIndex].answer) {
+                score++;
             }
             
-            const iqElement = document.getElementById('iq-level');
-            iqElement.textContent = iqLevel;
-            iqElement.style.background = iqColor;
+            currentQuestionIndex++;
             
-            // Сохранение лучшего результата
-            saveBestScore(score);
+            if (currentQuestionIndex < selectedQuestions.length) {
+                setTimeout(() => {
+                    showQuestion();
+                }, 500);
+            } else {
+                showResults();
+            }
         }
 
-        // Перезапуск игры
+        function showResults() {
+            const finalScore = score;
+            const percentage = (finalScore / 10) * 100;
+            
+            let rating, ratingClass, message;
+            
+            if (percentage >= 90) {
+                rating = '🧠 Гений!';
+                ratingClass = 'genius';
+                message = 'Невероятный результат! Ваш IQ явно выше среднего.';
+            } else if (percentage >= 70) {
+                rating = '🎯 Выше среднего';
+                ratingClass = 'above-average';
+                message = 'Отличная работа! У вас хорошие аналитические способности.';
+            } else if (percentage >= 50) {
+                rating = '✅ Нормальный уровень';
+                ratingClass = 'normal';
+                message = 'Хороший результат! Вы справились с большинством задач.';
+            } else {
+                rating = '📚 Нужно потренироваться';
+                ratingClass = 'need-practice';
+                message = 'Не расстраивайтесь! Практика поможет улучшить результат.';
+            }
+            
+            document.getElementById('final-score').textContent = `${finalScore}/10`;
+            document.getElementById('rating').textContent = rating;
+            document.getElementById('rating').className = `rating ${ratingClass}`;
+            document.getElementById('result-message').textContent = message;
+            
+            // Save to leaderboard
+            saveResult(playerName, finalScore);
+            
+            showScreen('result-screen');
+        }
+
+        function saveResult(name, score) {
+            const results = JSON.parse(localStorage.getItem('iqTestResults') || '[]');
+            const newResult = {
+                name: name,
+                score: score,
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+            
+            results.push(newResult);
+            results.sort((a, b) => b.score - a.score);
+            
+            localStorage.setItem('iqTestResults', JSON.stringify(results));
+        }
+
+        function showLeaderboard() {
+            const results = JSON.parse(localStorage.getItem('iqTestResults') || '[]');
+            const leaderboardContent = document.getElementById('leaderboard-content');
+            
+            if (results.length === 0) {
+                leaderboardContent.innerHTML = '<p style="text-align: center; padding: 40px;">Пока нет результатов</p>';
+            } else {
+                const table = document.createElement('table');
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Место</th>
+                            <th>Имя</th>
+                            <th>Баллы</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${results.map((result, index) => `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${result.name}</td>
+                                <td>${result.score}/10</td>
+                                <td>${result.date}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                leaderboardContent.innerHTML = '';
+                leaderboardContent.appendChild(table);
+            }
+            
+            showScreen('leaderboard-screen');
+        }
+
+        function clearLeaderboard() {
+            if (confirm('Вы уверены, что хотите очистить таблицу лидеров?')) {
+                localStorage.removeItem('iqTestResults');
+                showLeaderboard();
+            }
+        }
+
         function restartGame() {
-            document.getElementById('new-best').style.display = 'none';
-            startGame();
-        }
-
-        // Возврат на главную
-        function goHome() {
-            document.getElementById('new-best').style.display = 'none';
             showScreen('start-screen');
-            loadBestScore();
+            document.getElementById('player-name').value = playerName;
         }
 
-        // Инициализация при загрузке
-        window.onload = function() {
-            loadBestScore();
-        };
+        function showStartScreen() {
+            showScreen('start-screen');
+        }
+
+        function showScreen(screenId) {
+            // Hide all screens with fade out
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.classList.add('fade-out');
+            });
+            
+            setTimeout(() => {
+                document.querySelectorAll('.game-card').forEach(card => {
+                    card.classList.add('hidden');
+                    card.classList.remove('fade-out');
+                });
+                
+                // Show target screen
+                const targetScreen = document.getElementById(screenId);
+                targetScreen.classList.remove('hidden');
+                
+                // Trigger animation
+                setTimeout(() => {
+                    targetScreen.style.animation = 'none';
+                    targetScreen.offsetHeight; // Trigger reflow
+                    targetScreen.style.animation = 'fadeInUp 0.6s ease forwards';
+                }, 10);
+            }, 300);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+            
+            // Save theme preference
+            localStorage.setItem('darkTheme', document.body.classList.contains('dark-theme'));
+        }
+
+        // Load theme preference
+        window.addEventListener('load', () => {
+            const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
+            if (isDarkTheme) {
+                document.body.classList.add('dark-theme');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+        });
+
+        // Prevent accidental page refresh during game
+        window.addEventListener('beforeunload', (e) => {
+            if (!document.getElementById('game-screen').classList.contains('hidden')) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
     </script>
 </body>
 </html>
